@@ -1,7 +1,7 @@
-version: '3.8'
+version: '2.14.2'
 services:
   dev-db:
-    image: postgres:13
+    image: postgres:14
     ports:
       - 5434:5432
     environment:
@@ -9,16 +9,18 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: nest
     networks:
-      - freecodecamp
-  test-db:
-    image: postgres:13
-    ports:
-      - 5435:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: nest
-    networks:
-      - freecodecamp
+      - alibaba
 networks:
-  freecodecamp:
+  alibaba:
+#   test-db:
+#     image: postgres:13
+#     ports:
+#       - 5435:5432
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: 123
+#       POSTGRES_DB: nest
+#     networks:
+#       - freecodecamp
+# networks:
+#   freecodecamp:
