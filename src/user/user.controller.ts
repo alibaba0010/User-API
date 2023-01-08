@@ -1,10 +1,14 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('users')
 export class UserController {
-  @UseGuards()
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  getCurrentUser() {
-    return 'Hello User';
+
+  //   appends whatever is logged from the validate fn in jwtStrategy to the req.user
+  getCurrentUser(@Req() req: Request) {
+    return req.user;
   }
 }
