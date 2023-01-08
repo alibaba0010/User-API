@@ -33,7 +33,7 @@ export class AuthService {
 
     const comparePassword = await argon.verify(user.hash, password);
     if (!comparePassword)
-      throw new ForbiddenException('Credientials Incorrect');
+      throw new ForbiddenException('Password Incorrect');
 
     delete user.hash;
     return user;
