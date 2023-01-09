@@ -4,6 +4,7 @@ import { AppModule } from '../src/app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AuthDto } from 'src/auth/dto';
+import { UpdateUserDto } from '../src/user/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -91,14 +92,40 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signin')
           .withBody(dto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .stores('userToken', 'token');
       });
     });
   });
-
   describe('User', () => {
-    describe('Get Current User', () => {});
-    describe('Update User', () => {});
+    describe('Get Current User', () => {
+      it('should get Current User', () => {
+        return pactum
+          .spec()
+          .get('/users/user')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .expectStatus(200);
+      });
+    });
+    describe('Update User', () => {
+      const dto: UpdateUserDto = {
+        firstName: 'AliBaba',
+        email: 'zaka16@gmail.com',
+      };
+      it('should update user', () => {
+        return pactum
+          .spec()
+          .patch('/users')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.email);
+      });
+    });
   });
   describe('Bookmark', () => {
     describe('Create Bookmark', () => {});
